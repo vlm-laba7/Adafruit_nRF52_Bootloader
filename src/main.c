@@ -262,7 +262,11 @@ static void check_dfu_mode(void)
   dfu_start = dfu_start || button_pressed(BUTTON_DFU);
 
   // DFU + FRESET are pressed --> OTA
-  _ota_dfu = _ota_dfu  || ( button_pressed(BUTTON_DFU) && button_pressed(BUTTON_FRESET) ) ;
+#if BUTTONS_NUMBER == 1
+  _ota_dfu = _ota_dfu  || ( button_pressed(BUTTON_DFU) );
+#else
+  _ota_dfu = _ota_dfu  || ( button_pressed(BUTTON_DFU) ) && button_pressed(BUTTON_FRESET) ) ;
+#endif
 
   bool const valid_app = bootloader_app_is_valid();
   bool const just_start_app = valid_app && !dfu_start && (*dbl_reset_mem) == DFU_DBL_RESET_APP;

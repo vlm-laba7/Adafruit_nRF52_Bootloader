@@ -36,10 +36,11 @@
 /*------------------------------------------------------------------*/
 /* BUTTON
  *------------------------------------------------------------------*/
-#define BUTTONS_NUMBER      2
-#define BUTTON_1            11
-#define BUTTON_2            12
-#define BUTTON_PULL         NRF_GPIO_PIN_PULLUP
+#define BUTTONS_NUMBER      1
+#define BUTTON_1            31
+#define BUTTON_PULL         NRF_GPIO_PIN_NOPULL
+
+#define ENABLE_DCDC_0       1
 
 //--------------------------------------------------------------------+
 // BLE OTA

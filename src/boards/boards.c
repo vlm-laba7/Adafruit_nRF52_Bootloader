@@ -46,7 +46,7 @@
 //------------- IMPLEMENTATION -------------//
 void button_init(uint32_t pin)
 {
-  if ( BUTTON_PULL == NRF_GPIO_PIN_PULLDOWN )
+  if ( BUTTON_PULL == NRF_GPIO_PIN_PULLDOWN || BUTTON_PULL == NRF_GPIO_PIN_NOPULL )
   {
     nrf_gpio_cfg_sense_input(pin, BUTTON_PULL, NRF_GPIO_PIN_SENSE_HIGH);
   }
@@ -58,7 +58,7 @@ void button_init(uint32_t pin)
 
 bool button_pressed(uint32_t pin)
 {
-  uint32_t const active_state = (BUTTON_PULL == NRF_GPIO_PIN_PULLDOWN ? 1 : 0);
+  uint32_t const active_state = ((BUTTON_PULL == NRF_GPIO_PIN_PULLDOWN || BUTTON_PULL == NRF_GPIO_PIN_NOPULL) ? 1 : 0);
   return nrf_gpio_pin_read(pin) == active_state;
 }
 
@@ -74,7 +74,10 @@ void board_init(void)
   NRF_CLOCK->TASKS_LFCLKSTART = 1UL;
 
   button_init(BUTTON_DFU);
+#if (BUTTONS_NUMBER) > 1
   button_init(BUTTON_FRESET);
+#endif
+
   NRFX_DELAY_US(100); // wait for the pin state is stable
 
 #if LEDS_NUMBER > 0
